@@ -1,19 +1,36 @@
 import {createRoot} from "react-dom/client";
 import { Bar } from "react-chartjs-2";
-import {ChartConfiguration,CoreChartOptions} from "chart.js";
+import { ChartOptions,ChartData,Chart,CategoryScale,LinearScale,BarElement,Title,
+  Tooltip,Legend } from "chart.js";
 
 import "./chart-test-index.less";
 
+Chart.register(CategoryScale,LinearScale,BarElement,Title,Tooltip,Legend);
+
 function ChartTestIndex():JSX.Element
 {
-  const barconfig={
+  const barconfig:ChartOptions<"bar">={
 
+  };
+
+  const bardata:ChartData<"bar">={
+    labels:["thing1","thing2","thing3"],
+    datasets:[
+      {
+        label:"data1",
+        data:[1,10,50],
+      },
+      {
+        label:"data2",
+        data:[5,3]
+      }
+    ]
   };
 
   return <>
     hello
 
-    <Bar options={barconfig}/>
+    <Bar options={barconfig} data={bardata}/>
   </>;
 }
 
