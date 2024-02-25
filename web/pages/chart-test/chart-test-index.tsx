@@ -2,6 +2,9 @@ import {createRoot} from "react-dom/client";
 import { Bar } from "react-chartjs-2";
 import { ChartOptions,ChartData,Chart,CategoryScale,LinearScale,BarElement,Title,
   Tooltip,Legend } from "chart.js";
+import {QueryClient,QueryClientProvider,useQuery} from "@tanstack/react-query";
+
+import { getAvailableTimeDatas } from "apis/time-stat-api";
 
 import "./chart-test-index.less";
 
@@ -27,6 +30,17 @@ function ChartTestIndex():JSX.Element
     ]
   };
 
+  // request the available time datas
+  const availableTimeDatasQy=useQuery({
+    queryKey:["avail-datas"],
+    initialData:[],
+
+    async queryFn():Promise<TimeStatDataFile[]>
+    {
+      return getAvailableTimeDatas();
+    }
+  });
+
   return <>
     hello
 
@@ -36,7 +50,11 @@ function ChartTestIndex():JSX.Element
 
 function main()
 {
-  createRoot(document.querySelector("main")!).render(<ChartTestIndex/>);
+  createRoot(document.querySelector("main")!).render(
+    <QueryClientProvider client={new QueryClient()}>
+      <ChartTestIndex/>
+    </QueryClientProvider>
+  );
 }
 
 window.onload=main;
