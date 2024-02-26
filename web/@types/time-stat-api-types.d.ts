@@ -1,4 +1,5 @@
 // typings for time stat server api. all these types should exist on the api side as well
+// all duration units are NANOSECONDs
 
 /** collection of tag breakdowns. associated with a list of events.
  *  key: a tag (not the value, but the tag name)
