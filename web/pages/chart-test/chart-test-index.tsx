@@ -4,6 +4,8 @@ import { ChartOptions,ChartData,Chart,CategoryScale,LinearScale,BarElement,Title
   Tooltip,Legend } from "chart.js";
 import {QueryClient,QueryClientProvider,useQuery,useMutation} from "@tanstack/react-query";
 import { useEffect } from "react";
+import _ from "lodash";
+import {useImmer} from "use-immer";
 
 import { getAvailableTimeDatas,getTimeDatafile } from "apis/time-stat-api";
 
@@ -17,6 +19,12 @@ interface GetDatafileMqyArgs
   dataFilters:TagFilter[]
 }
 
+interface BarData
+{
+  x:string
+  y:number
+}
+
 function ChartTestIndex():JSX.Element
 {
   // --- test data ---
@@ -24,9 +32,20 @@ function ChartTestIndex():JSX.Element
 
   };
 
-  const bardata:ChartData<"bar">={
-    datasets:[]
-  };
+  const [bardata,setBardata]=useImmer<ChartData<"bar",BarData[]>>({
+    datasets:[
+      {
+        data:[
+          {x:"huh",y:10},
+        ]
+      },
+      {
+        data:[
+          {x:"huh",y:11},
+        ]
+      },
+    ]
+  });
 
 
 
@@ -57,7 +76,7 @@ function ChartTestIndex():JSX.Element
   // test requesting some test data file to do chart rendering
   useEffect(()=>{
     getDatafileMqy.mutate({
-      dataFilename:"data1.tsv",
+      dataFilename:"data2.tsv",
       dataFilters:[]
     });
   },[]);
@@ -71,9 +90,18 @@ function ChartTestIndex():JSX.Element
 
     console.log("data update",getDatafileMqy.data);
 
-    const valuesData:TagValueAnalysisDict=getDatafileMqy.data.tagsAnalysis["category"].valuesAnalysis;
+    const valuesData:TagValueAnalysisDict=getDatafileMqy.data.tagsAnalysis["item"].valuesAnalysis;
 
+    const newBarData:BarData[]=_.map(valuesData,(analysis:TimeEventAnalysis,tagValue:string):BarData=>{
+      return {
+        x:tagValue,
+        y:analysis.totalTime*2.77778e-13
+      };
+    });
 
+    setBardata((draft)=>{
+      draft.datasets=[{data:newBarData}];
+    });
   },[getDatafileMqy.data]);
 
 
