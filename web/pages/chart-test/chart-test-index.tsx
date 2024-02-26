@@ -25,17 +25,7 @@ function ChartTestIndex():JSX.Element
   };
 
   const bardata:ChartData<"bar">={
-    labels:["thing1","thing2","thing3"],
-    datasets:[
-      {
-        label:"data1",
-        data:[1,10,50],
-      },
-      {
-        label:"data2",
-        data:[5,3]
-      }
-    ]
+    datasets:[]
   };
 
 
@@ -72,8 +62,23 @@ function ChartTestIndex():JSX.Element
     });
   },[]);
 
+  // test parsing the data into chart format
+  useEffect(()=>{
+    if (!getDatafileMqy.data)
+    {
+      return;
+    }
 
-  console.log("data",getDatafileMqy.data);
+    console.log("data update",getDatafileMqy.data);
+
+    const valuesData:TagValueAnalysisDict=getDatafileMqy.data.tagsAnalysis["category"].valuesAnalysis;
+
+
+  },[getDatafileMqy.data]);
+
+
+
+
 
   // --- render ---
   return <>

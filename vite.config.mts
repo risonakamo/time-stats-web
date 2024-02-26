@@ -32,6 +32,7 @@ export default defineConfig({
         target:["esnext"],
         sourcemap:true,
         emptyOutDir:true,
+        minify:false,
 
         rollupOptions:{
             input:{

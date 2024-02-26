@@ -29,7 +29,7 @@ interface TagFilter
 interface TimeDataFile
 {
     topAnalysis:TimeEventAnalysis
-    tagAnalysis:TagBreakdownsDict
+    tagsAnalysis:TagBreakdownsDict
 }
 
 /** analysis of a list of time events */
