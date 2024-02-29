@@ -110,9 +110,14 @@ function ChartTestIndex():JSX.Element
 
   // --- render ---
   return <>
-    hello
+    <section className="file-list">
 
-    <Bar options={barconfig} data={bardata}/>
+    </section>
+
+    <section className="contents">
+      <Bar options={barconfig} data={bardata}/>
+    </section>
+
   </>;
 }
 
