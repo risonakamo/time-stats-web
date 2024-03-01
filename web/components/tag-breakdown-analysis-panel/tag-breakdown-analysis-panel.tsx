@@ -5,6 +5,8 @@ import { ChartData,ChartOptions } from "chart.js";
 import { useEffect } from "react";
 
 import { convertToBarData } from "lib/chartjs-lib";
+import { tagAnalysisDictToList,sortTagAnalysisByTotalTime,
+  sortTagAnalysisByDate } from "lib/time-stat-api-lib";
 
 import "./tag-breakdown-analysis-panel.less";
 
@@ -41,7 +43,9 @@ export function TagBreakdownAnalysisPanel(props:TagBreakdownAnalysisPanelProps):
   useEffect(()=>{
     setBardata((draft)=>{
       draft.datasets=[{
-        data:convertToBarData(props.tagAnalysis.valuesAnalysis),
+        data:convertToBarData(
+          sortTagAnalysisByDate(tagAnalysisDictToList(props.tagAnalysis.valuesAnalysis))
+        ),
         label:props.tagAnalysis.tag,
       }];
     });
