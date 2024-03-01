@@ -6,6 +6,7 @@ import {QueryClient,QueryClientProvider,useQuery,useMutation} from "@tanstack/re
 import { useEffect } from "react";
 import _ from "lodash";
 import {useImmer} from "use-immer";
+import { TagBreakdownAnalysisPanel } from "components/tag-breakdown-analysis-panel/tag-breakdown-analysis-panel";
 
 import { getAvailableTimeDatas,getTimeDatafile } from "apis/time-stat-api";
 
@@ -19,36 +20,8 @@ interface GetDatafileMqyArgs
   dataFilters:TagFilter[]
 }
 
-interface BarData
-{
-  x:string
-  y:number
-}
-
 function ChartTestIndex():JSX.Element
 {
-  // --- test data ---
-  const barconfig:ChartOptions<"bar">={
-
-  };
-
-  const [bardata,setBardata]=useImmer<ChartData<"bar",BarData[]>>({
-    datasets:[
-      {
-        data:[
-          {x:"huh",y:10},
-        ]
-      },
-      {
-        data:[
-          {x:"huh",y:11},
-        ]
-      },
-    ]
-  });
-
-
-
   // --- querys ---
   // request the available time datas
   const availableTimeDatasQy=useQuery<TimeStatDataFile[]>({
@@ -89,19 +62,6 @@ function ChartTestIndex():JSX.Element
     }
 
     console.log("data update",getDatafileMqy.data);
-
-    const valuesData:TagValueAnalysisDict=getDatafileMqy.data.tagsAnalysis["item"].valuesAnalysis;
-
-    const newBarData:BarData[]=_.map(valuesData,(analysis:TimeEventAnalysis,tagValue:string):BarData=>{
-      return {
-        x:tagValue,
-        y:analysis.totalTime*2.77778e-13
-      };
-    });
-
-    setBardata((draft)=>{
-      draft.datasets=[{data:newBarData}];
-    });
   },[getDatafileMqy.data]);
 
 
@@ -109,13 +69,24 @@ function ChartTestIndex():JSX.Element
 
 
   // --- render ---
+  /** render a tag analysis panel for every tag breakdown */
+  function r_tagAnalysisPanels():JSX.Element[]
+  {
+    return _.map(
+      getDatafileMqy.data?.tagsAnalysis,
+      (tagBreakdown:TagBreakdown,tagName:string):JSX.Element=>{
+        return <TagBreakdownAnalysisPanel key={tagName} tagAnalysis={tagBreakdown}/>
+      }
+    );
+  }
+
   return <>
     <section className="file-list">
 
     </section>
 
     <section className="contents">
-      <Bar options={barconfig} data={bardata}/>
+      {r_tagAnalysisPanels()}
     </section>
 
   </>;
