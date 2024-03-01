@@ -20,16 +20,34 @@ export function TagBreakdownAnalysisPanel(props:TagBreakdownAnalysisPanelProps):
     datasets:[]
   });
 
-  const barconfig:ChartOptions<"bar">={
-
-  };
+  const [barconfig,setBarconfig]=useImmer<ChartOptions<"bar">>({
+    scales:{
+      y:{
+        title:{
+          display:true,
+          text:"Hours",
+        }
+      },
+      x:{
+        title:{
+          display:true,
+          text:"missing tag value"
+        }
+      }
+    }
+  });
 
   // update bar data on tag analysis changing
   useEffect(()=>{
     setBardata((draft)=>{
       draft.datasets=[{
-        data:convertToBarData(props.tagAnalysis.valuesAnalysis)
+        data:convertToBarData(props.tagAnalysis.valuesAnalysis),
+        label:props.tagAnalysis.tag,
       }];
+    });
+
+    setBarconfig((draft)=>{
+      draft.scales!.x!.title!.text=props.tagAnalysis.tag;
     });
   },[props.tagAnalysis]);
 

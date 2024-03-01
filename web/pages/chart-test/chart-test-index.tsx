@@ -1,18 +1,17 @@
 import {createRoot} from "react-dom/client";
-import { Bar } from "react-chartjs-2";
-import { ChartOptions,ChartData,Chart,CategoryScale,LinearScale,BarElement,Title,
+import { Chart,CategoryScale,LinearScale,BarElement,Title,Colors,
   Tooltip,Legend } from "chart.js";
 import {QueryClient,QueryClientProvider,useQuery,useMutation} from "@tanstack/react-query";
 import { useEffect } from "react";
 import _ from "lodash";
-import {useImmer} from "use-immer";
-import { TagBreakdownAnalysisPanel } from "components/tag-breakdown-analysis-panel/tag-breakdown-analysis-panel";
+import { TagBreakdownAnalysisPanel } from
+  "components/tag-breakdown-analysis-panel/tag-breakdown-analysis-panel";
 
 import { getAvailableTimeDatas,getTimeDatafile } from "apis/time-stat-api";
 
 import "./chart-test-index.less";
 
-Chart.register(CategoryScale,LinearScale,BarElement,Title,Tooltip,Legend);
+Chart.register(CategoryScale,LinearScale,BarElement,Title,Tooltip,Legend,Colors);
 
 interface GetDatafileMqyArgs
 {

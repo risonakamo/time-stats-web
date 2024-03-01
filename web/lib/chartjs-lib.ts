@@ -11,7 +11,7 @@ export function convertToBarData(tagAnalysisDict:TagValueAnalysisDict):BarData[]
             x:tagValue,
 
             // convert nanoseconds to hours
-            y:analysis.totalTime*2.77778e-13
+            y:analysis.totalTime*2.77778e-13,
         };
     });
 }
