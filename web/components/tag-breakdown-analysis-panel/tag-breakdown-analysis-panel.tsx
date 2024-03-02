@@ -98,16 +98,25 @@ export function TagBreakdownAnalysisPanel(props:TagBreakdownAnalysisPanelProps):
   },[props.tagAnalysis]);
 
   return <div className="tag-breakdown-analysis-panel">
-    <div className="chart total-time-chart">
-      <Bar options={barconfig} data={totalTimeBarData}/>
+    <h2>{props.tagAnalysis.tag}</h2>
+
+    <div className="info">
+      <p>Total time: {props.tagAnalysis.totalTime*2.77778e-13} hrs</p>
+      <p>Average time: {props.tagAnalysis.averageTime*2.77778e-13} hrs</p>
     </div>
 
-    <div className="chart average-time-chart">
-      <Bar options={barconfig} data={averageTimeBarData}/>
-    </div>
+    <div className="charts">
+      <div className="chart total-time-chart">
+        <Bar options={barconfig} data={totalTimeBarData}/>
+      </div>
 
-    <div className="chart">
-      <Pie options={pieconfig} data={totalTimePieData}/>
+      <div className="chart average-time-chart">
+        <Bar options={barconfig} data={averageTimeBarData}/>
+      </div>
+
+      <div className="chart">
+        <Pie options={pieconfig} data={totalTimePieData}/>
+      </div>
     </div>
   </div>;
 }
