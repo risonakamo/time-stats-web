@@ -2,6 +2,8 @@
 
 import _ from "lodash";
 
+import { nanoToHours } from "lib/utils";
+
 /** convert tag analysis value dict, which contains analysis for multiple values of a single TagBreakdownsDict
  *  tag, into bar chart data, using total time as the value */
 export function convertToBarDataTotalTime(tagAnalysisList:TimeEventAnalysis2[]):BarData[]
@@ -11,7 +13,7 @@ export function convertToBarDataTotalTime(tagAnalysisList:TimeEventAnalysis2[]):
             x:analysis.tagValue,
 
             // convert nanoseconds to hours
-            y:analysis.totalTime*2.77778e-13,
+            y:nanoToHours(analysis.totalTime),
         };
     });
 }
@@ -25,7 +27,7 @@ export function convertToBarDataAverageTime(tagAnalysisList:TimeEventAnalysis2[]
             x:analysis.tagValue,
 
             // convert nanoseconds to hours
-            y:analysis.averageTime*2.77778e-13,
+            y:nanoToHours(analysis.averageTime),
         };
     });
 }

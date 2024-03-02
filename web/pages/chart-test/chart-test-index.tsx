@@ -48,7 +48,7 @@ function ChartTestIndex():JSX.Element
   // test requesting some test data file to do chart rendering
   useEffect(()=>{
     getDatafileMqy.mutate({
-      dataFilename:"data2.tsv",
+      dataFilename:"lynette2.tsv",
       dataFilters:[]
     });
   },[]);

@@ -8,6 +8,7 @@ import { convertToBarDataTotalTime,convertToBarDataAverageTime,bardataToPiedata,
   splitPieData } from "lib/chartjs-lib";
 import { tagAnalysisDictToList,sortTagAnalysisByTotalTime,
   sortTagAnalysisByDate } from "lib/time-stat-api-lib";
+import { nanoToHours } from "lib/utils";
 
 import "./tag-breakdown-analysis-panel.less";
 
@@ -101,8 +102,8 @@ export function TagBreakdownAnalysisPanel(props:TagBreakdownAnalysisPanelProps):
     <h2>{props.tagAnalysis.tag}</h2>
 
     <div className="info">
-      <p>Total time: {props.tagAnalysis.totalTime*2.77778e-13} hrs</p>
-      <p>Average time: {props.tagAnalysis.averageTime*2.77778e-13} hrs</p>
+      <p>Total time: {truncateHour(nanoToHours(props.tagAnalysis.totalTime))} hrs</p>
+      <p>Average time: {truncateHour(nanoToHours(props.tagAnalysis.averageTime))} hrs</p>
     </div>
 
     <div className="charts">
@@ -119,4 +120,10 @@ export function TagBreakdownAnalysisPanel(props:TagBreakdownAnalysisPanelProps):
       </div>
     </div>
   </div>;
+}
+
+/** truncate hour to 2 decs */
+function truncateHour(hours:number):number
+{
+  return parseFloat(hours.toFixed(2))
 }
