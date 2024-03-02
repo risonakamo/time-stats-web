@@ -18,7 +18,11 @@ interface TagBreakdownAnalysisPanelProps
 /** analysis ui for a single tag breakdown */
 export function TagBreakdownAnalysisPanel(props:TagBreakdownAnalysisPanelProps):JSX.Element
 {
-  const [bardata,setBardata]=useImmer<ChartData<"bar",BarData[]>>({
+  const [totalTimeBarData,setTotalTimeBarData]=useImmer<ChartData<"bar",BarData[]>>({
+    datasets:[]
+  });
+
+  const [averageTimeBarData,setAverageTimeBarData]=useImmer<ChartData<"bar",BarData[]>>({
     datasets:[]
   });
 
@@ -41,7 +45,7 @@ export function TagBreakdownAnalysisPanel(props:TagBreakdownAnalysisPanelProps):
 
   // update bar data on tag analysis changing
   useEffect(()=>{
-    setBardata((draft)=>{
+    setTotalTimeBarData((draft)=>{
       draft.datasets=[
         {
           data:convertToBarDataTotalTime(
@@ -49,15 +53,17 @@ export function TagBreakdownAnalysisPanel(props:TagBreakdownAnalysisPanelProps):
           ),
           label:"total time",
         },
-        // probably move this to another chart.
-        // hard to see when its on the same scale as the total time, which is much bigger.
-        // {
-        //   data:convertToBarDataAverageTime(
-        //     sortTagAnalysisByDate(tagAnalysisDictToList(props.tagAnalysis.valuesAnalysis))
-        //   ),
-        //   label:"average time"
-        // }
       ];
+    });
+
+    setAverageTimeBarData((draft)=>{
+      draft.datasets=[{
+        data:convertToBarDataAverageTime(
+          sortTagAnalysisByDate(tagAnalysisDictToList(props.tagAnalysis.valuesAnalysis))
+        ),
+        label:"average time",
+        backgroundColor:"#de5261"
+      }];
     });
 
     setBarconfig((draft)=>{
@@ -66,6 +72,11 @@ export function TagBreakdownAnalysisPanel(props:TagBreakdownAnalysisPanelProps):
   },[props.tagAnalysis]);
 
   return <div className="tag-breakdown-analysis-panel">
-    <Bar options={barconfig} data={bardata}/>
+    <div className="chart total-time-chart">
+      <Bar options={barconfig} data={totalTimeBarData}/>
+    </div>
+    <div className="chart average-time-chart">
+      <Bar options={barconfig} data={averageTimeBarData}/>
+    </div>
   </div>;
 }
