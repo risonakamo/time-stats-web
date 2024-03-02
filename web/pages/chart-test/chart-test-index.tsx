@@ -1,6 +1,6 @@
 import {createRoot} from "react-dom/client";
 import { Chart,CategoryScale,LinearScale,BarElement,Title,Colors,
-  Tooltip,Legend } from "chart.js";
+  Tooltip,Legend,ArcElement } from "chart.js";
 import {QueryClient,QueryClientProvider,useQuery,useMutation} from "@tanstack/react-query";
 import { useEffect } from "react";
 import _ from "lodash";
@@ -11,7 +11,7 @@ import { getAvailableTimeDatas,getTimeDatafile } from "apis/time-stat-api";
 
 import "./chart-test-index.less";
 
-Chart.register(CategoryScale,LinearScale,BarElement,Title,Tooltip,Legend,Colors);
+Chart.register(CategoryScale,LinearScale,BarElement,Title,Tooltip,Legend,Colors,ArcElement);
 
 interface GetDatafileMqyArgs
 {

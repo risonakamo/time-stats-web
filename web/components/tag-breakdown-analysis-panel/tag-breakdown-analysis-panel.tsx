@@ -1,10 +1,10 @@
-import { Bar } from "react-chartjs-2";
+import { Bar,Pie } from "react-chartjs-2";
 import { useMemo } from "react";
 import { useImmer } from "use-immer";
 import { ChartData,ChartOptions } from "chart.js";
 import { useEffect } from "react";
 
-import { convertToBarDataTotalTime,convertToBarDataAverageTime } from "lib/chartjs-lib";
+import { convertToBarDataTotalTime,convertToBarDataAverageTime,bardataToPiedata } from "lib/chartjs-lib";
 import { tagAnalysisDictToList,sortTagAnalysisByTotalTime,
   sortTagAnalysisByDate } from "lib/time-stat-api-lib";
 
@@ -26,6 +26,10 @@ export function TagBreakdownAnalysisPanel(props:TagBreakdownAnalysisPanelProps):
     datasets:[]
   });
 
+  const [totalTimePieData,setTotalTimePieData]=useImmer<ChartData<"pie",PieData[]>>({
+    datasets:[]
+  });
+
   const [barconfig,setBarconfig]=useImmer<ChartOptions<"bar">>({
     scales:{
       y:{
@@ -41,6 +45,10 @@ export function TagBreakdownAnalysisPanel(props:TagBreakdownAnalysisPanelProps):
         }
       }
     }
+  });
+
+  const [pieconfig,setPieconfig]=useImmer<ChartOptions<"pie">>({
+
   });
 
   // update bar data on tag analysis changing
@@ -66,6 +74,17 @@ export function TagBreakdownAnalysisPanel(props:TagBreakdownAnalysisPanelProps):
       }];
     });
 
+    setTotalTimePieData((draft)=>{
+      draft.datasets=[
+        {
+          data:bardataToPiedata(convertToBarDataAverageTime(
+            sortTagAnalysisByDate(tagAnalysisDictToList(props.tagAnalysis.valuesAnalysis))
+          )),
+          label:"total time",
+        },
+      ];
+    });
+
     setBarconfig((draft)=>{
       draft.scales!.x!.title!.text=props.tagAnalysis.tag;
     });
@@ -75,8 +94,13 @@ export function TagBreakdownAnalysisPanel(props:TagBreakdownAnalysisPanelProps):
     <div className="chart total-time-chart">
       <Bar options={barconfig} data={totalTimeBarData}/>
     </div>
+
     <div className="chart average-time-chart">
       <Bar options={barconfig} data={averageTimeBarData}/>
+    </div>
+
+    <div className="chart">
+      <Pie options={pieconfig} data={totalTimePieData}/>
     </div>
   </div>;
 }

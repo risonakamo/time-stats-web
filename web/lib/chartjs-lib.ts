@@ -29,3 +29,14 @@ export function convertToBarDataAverageTime(tagAnalysisList:TimeEventAnalysis2[]
         };
     });
 }
+
+/** convert bar data to pie data */
+export function bardataToPiedata(bardata:BarData[]):PieData[]
+{
+    return _.map(bardata,(data:BarData):PieData=>{
+        return {
+            value:data.y,
+            label:data.x
+        };
+    });
+}
