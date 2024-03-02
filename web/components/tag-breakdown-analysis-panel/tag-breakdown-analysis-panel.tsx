@@ -4,7 +4,8 @@ import { useImmer } from "use-immer";
 import { ChartData,ChartOptions } from "chart.js";
 import { useEffect } from "react";
 
-import { convertToBarDataTotalTime,convertToBarDataAverageTime,bardataToPiedata } from "lib/chartjs-lib";
+import { convertToBarDataTotalTime,convertToBarDataAverageTime,bardataToPiedata,
+  splitPieData } from "lib/chartjs-lib";
 import { tagAnalysisDictToList,sortTagAnalysisByTotalTime,
   sortTagAnalysisByDate } from "lib/time-stat-api-lib";
 
@@ -26,7 +27,7 @@ export function TagBreakdownAnalysisPanel(props:TagBreakdownAnalysisPanelProps):
     datasets:[]
   });
 
-  const [totalTimePieData,setTotalTimePieData]=useImmer<ChartData<"pie",PieData[]>>({
+  const [totalTimePieData,setTotalTimePieData]=useImmer<ChartData<"pie",number[]>>({
     datasets:[]
   });
 
@@ -75,14 +76,20 @@ export function TagBreakdownAnalysisPanel(props:TagBreakdownAnalysisPanelProps):
     });
 
     setTotalTimePieData((draft)=>{
+      var piedata:PieData[]=bardataToPiedata(convertToBarDataTotalTime(
+        sortTagAnalysisByDate(tagAnalysisDictToList(props.tagAnalysis.valuesAnalysis))
+      ));
+
+      var splitdata:SplitPieData=splitPieData(piedata);
+
       draft.datasets=[
         {
-          data:bardataToPiedata(convertToBarDataAverageTime(
-            sortTagAnalysisByDate(tagAnalysisDictToList(props.tagAnalysis.valuesAnalysis))
-          )),
-          label:"total time",
+          data:splitdata.data,
+          label:props.tagAnalysis.tag
         },
       ];
+
+      draft.labels=splitdata.labels;
     });
 
     setBarconfig((draft)=>{

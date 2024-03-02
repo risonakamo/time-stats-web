@@ -36,7 +36,20 @@ export function bardataToPiedata(bardata:BarData[]):PieData[]
     return _.map(bardata,(data:BarData):PieData=>{
         return {
             value:data.y,
-            label:data.x
+            id:data.x
         };
     });
+}
+
+/** convert list of pie data into split pie data */
+export function splitPieData(piedatas:PieData[]):SplitPieData
+{
+    return {
+        data:_.map(piedatas,(data:PieData):number=>{
+            return data.value;
+        }),
+        labels:_.map(piedatas,(data:PieData):string=>{
+            return data.id;
+        })
+    };
 }

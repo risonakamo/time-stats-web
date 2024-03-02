@@ -9,5 +9,12 @@ interface BarData
 interface PieData
 {
     value:number
-    label:string
+    id:string
+}
+
+/** created from array of PieData. pie data is split into 2 parts to be given to the pie chart */
+interface SplitPieData
+{
+    data:number[]
+    labels:string[]
 }
