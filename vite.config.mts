@@ -31,7 +31,7 @@ export default defineConfig({
         outDir:`${__dirname}/build`,
         target:["esnext"],
         sourcemap:true,
-        emptyOutDir:true,
+        // emptyOutDir:true,
         minify:false,
 
         rollupOptions:{

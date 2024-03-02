@@ -3,6 +3,7 @@ import { useMemo } from "react";
 import { useImmer } from "use-immer";
 import { ChartData,ChartOptions } from "chart.js";
 import { useEffect } from "react";
+import {ChartPie,ChartBar} from "@phosphor-icons/react";
 
 import { convertToBarDataTotalTime,convertToBarDataAverageTime,bardataToPiedata,
   splitPieData } from "lib/chartjs-lib";
@@ -55,11 +56,15 @@ export function TagBreakdownAnalysisPanel(props:TagBreakdownAnalysisPanelProps):
 
   // update bar data on tag analysis changing
   useEffect(()=>{
+    const listdata:TimeEventAnalysis2[]=sortTagAnalysisByDate(
+      tagAnalysisDictToList(props.tagAnalysis.valuesAnalysis)
+    );
+
     setTotalTimeBarData((draft)=>{
       draft.datasets=[
         {
           data:convertToBarDataTotalTime(
-            sortTagAnalysisByDate(tagAnalysisDictToList(props.tagAnalysis.valuesAnalysis))
+            listdata
           ),
           label:"total time",
         },
@@ -69,7 +74,7 @@ export function TagBreakdownAnalysisPanel(props:TagBreakdownAnalysisPanelProps):
     setAverageTimeBarData((draft)=>{
       draft.datasets=[{
         data:convertToBarDataAverageTime(
-          sortTagAnalysisByDate(tagAnalysisDictToList(props.tagAnalysis.valuesAnalysis))
+          listdata
         ),
         label:"average time",
         backgroundColor:"#de5261"
@@ -78,7 +83,7 @@ export function TagBreakdownAnalysisPanel(props:TagBreakdownAnalysisPanelProps):
 
     setTotalTimePieData((draft)=>{
       var piedata:PieData[]=bardataToPiedata(convertToBarDataTotalTime(
-        sortTagAnalysisByDate(tagAnalysisDictToList(props.tagAnalysis.valuesAnalysis))
+        listdata
       ));
 
       var splitdata:SplitPieData=splitPieData(piedata);
@@ -104,6 +109,20 @@ export function TagBreakdownAnalysisPanel(props:TagBreakdownAnalysisPanelProps):
     <div className="info">
       <p>Total time: {truncateHour(nanoToHours(props.tagAnalysis.totalTime))} hrs</p>
       <p>Average time: {truncateHour(nanoToHours(props.tagAnalysis.averageTime))} hrs</p>
+    </div>
+
+    <div className="controls">
+      <div className="control-line">
+        <div className="description">Switch chart mode</div>
+        <div className="buttons">
+          <div className="button-wrap">
+            <ChartBar/>
+          </div>
+          <div className="button-wrap">
+            <ChartPie/>
+          </div>
+        </div>
+      </div>
     </div>
 
     <div className="charts">

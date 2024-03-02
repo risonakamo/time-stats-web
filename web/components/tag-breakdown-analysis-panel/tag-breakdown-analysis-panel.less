@@ -13,6 +13,59 @@
         margin-bottom: 6px;
     }
 
+    .info
+    {
+        margin-bottom: 10px;
+    }
+
+    .controls
+    {
+        .control-line
+        {
+            height: 30px;
+            display: flex;
+            align-items: center;
+
+            .description
+            {
+                padding: 2px 4px;
+                border-radius: 2px;
+                margin-right: 26px;
+                cursor: pointer;
+
+                &:hover
+                {
+                    background: #ebebeb;
+                }
+            }
+
+            .buttons
+            {
+                .button-wrap
+                {
+                    display: inline-block;
+                    padding: 2px;
+                    height: 20px;
+                    width: 20px;
+
+                    border-radius: 3px;
+                    margin-right: 5px;
+
+                    & > svg
+                    {
+                        height: 20px;
+                        width: 20px;
+                    }
+
+                    &:hover
+                    {
+                        background: #ebebeb;
+                    }
+                }
+            }
+        }
+    }
+
     .charts
     {
         display: flex;
