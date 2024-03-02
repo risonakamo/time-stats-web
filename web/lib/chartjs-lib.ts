@@ -3,8 +3,8 @@
 import _ from "lodash";
 
 /** convert tag analysis value dict, which contains analysis for multiple values of a single TagBreakdownsDict
- *  tag, into bar chart data */
-export function convertToBarData(tagAnalysisList:TimeEventAnalysis2[]):BarData[]
+ *  tag, into bar chart data, using total time as the value */
+export function convertToBarDataTotalTime(tagAnalysisList:TimeEventAnalysis2[]):BarData[]
 {
     return _.map(tagAnalysisList,(analysis:TimeEventAnalysis2,i:number):BarData=>{
         return {
@@ -12,6 +12,20 @@ export function convertToBarData(tagAnalysisList:TimeEventAnalysis2[]):BarData[]
 
             // convert nanoseconds to hours
             y:analysis.totalTime*2.77778e-13,
+        };
+    });
+}
+
+/** convert tag analysis value dict, which contains analysis for multiple values of a single TagBreakdownsDict
+ *  tag, into bar chart data, using average time as the value */
+export function convertToBarDataAverageTime(tagAnalysisList:TimeEventAnalysis2[]):BarData[]
+{
+    return _.map(tagAnalysisList,(analysis:TimeEventAnalysis2,i:number):BarData=>{
+        return {
+            x:analysis.tagValue,
+
+            // convert nanoseconds to hours
+            y:analysis.averageTime*2.77778e-13,
         };
     });
 }

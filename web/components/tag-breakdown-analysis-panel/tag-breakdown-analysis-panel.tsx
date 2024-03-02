@@ -4,7 +4,7 @@ import { useImmer } from "use-immer";
 import { ChartData,ChartOptions } from "chart.js";
 import { useEffect } from "react";
 
-import { convertToBarData } from "lib/chartjs-lib";
+import { convertToBarDataTotalTime,convertToBarDataAverageTime } from "lib/chartjs-lib";
 import { tagAnalysisDictToList,sortTagAnalysisByTotalTime,
   sortTagAnalysisByDate } from "lib/time-stat-api-lib";
 
@@ -42,12 +42,22 @@ export function TagBreakdownAnalysisPanel(props:TagBreakdownAnalysisPanelProps):
   // update bar data on tag analysis changing
   useEffect(()=>{
     setBardata((draft)=>{
-      draft.datasets=[{
-        data:convertToBarData(
-          sortTagAnalysisByDate(tagAnalysisDictToList(props.tagAnalysis.valuesAnalysis))
-        ),
-        label:props.tagAnalysis.tag,
-      }];
+      draft.datasets=[
+        {
+          data:convertToBarDataTotalTime(
+            sortTagAnalysisByDate(tagAnalysisDictToList(props.tagAnalysis.valuesAnalysis))
+          ),
+          label:"total time",
+        },
+        // probably move this to another chart.
+        // hard to see when its on the same scale as the total time, which is much bigger.
+        // {
+        //   data:convertToBarDataAverageTime(
+        //     sortTagAnalysisByDate(tagAnalysisDictToList(props.tagAnalysis.valuesAnalysis))
+        //   ),
+        //   label:"average time"
+        // }
+      ];
     });
 
     setBarconfig((draft)=>{
