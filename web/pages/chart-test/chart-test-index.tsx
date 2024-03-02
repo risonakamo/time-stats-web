@@ -13,6 +13,8 @@ import "./chart-test-index.less";
 
 Chart.register(CategoryScale,LinearScale,BarElement,Title,Tooltip,Legend,Colors,ArcElement);
 
+const testDataFileName:string="rouge.tsv";
+
 interface GetDatafileMqyArgs
 {
   dataFilename:string
@@ -48,7 +50,7 @@ function ChartTestIndex():JSX.Element
   // test requesting some test data file to do chart rendering
   useEffect(()=>{
     getDatafileMqy.mutate({
-      dataFilename:"lynette2.tsv",
+      dataFilename:testDataFileName,
       dataFilters:[]
     });
   },[]);
