@@ -124,6 +124,34 @@ export function TagBreakdownAnalysisPanel(props:TagBreakdownAnalysisPanelProps):
 
 
   // --- render ---
+  /** render charts section. conditionally renders based on the current chart mode */
+  function r_charts():JSX.Element
+  {
+    if (chartMode=="bar")
+    {
+      return <>
+        <div className="chart total-time-chart">
+          <Bar options={barconfig} data={totalTimeBarData}/>
+        </div>
+
+        <div className="chart average-time-chart">
+          <Bar options={barconfig} data={averageTimeBarData}/>
+        </div>
+      </>;
+    }
+
+    else if (chartMode=="pie")
+    {
+      return <>
+        <div className="chart">
+          <Pie options={pieconfig} data={totalTimePieData}/>
+        </div>
+      </>;
+    }
+
+    return <p>unknown chart mode {chartMode}</p>;
+  }
+
   const chartSwitchControlLineButtons:ControlLineButtonConfig[]=[
     {
       icon:<ChartBar/>,
@@ -149,17 +177,7 @@ export function TagBreakdownAnalysisPanel(props:TagBreakdownAnalysisPanelProps):
     </div>
 
     <div className="charts">
-      <div className="chart total-time-chart">
-        <Bar options={barconfig} data={totalTimeBarData}/>
-      </div>
-
-      <div className="chart average-time-chart">
-        <Bar options={barconfig} data={averageTimeBarData}/>
-      </div>
-
-      <div className="chart">
-        <Pie options={pieconfig} data={totalTimePieData}/>
-      </div>
+      {r_charts()}
     </div>
   </div>;
 }
