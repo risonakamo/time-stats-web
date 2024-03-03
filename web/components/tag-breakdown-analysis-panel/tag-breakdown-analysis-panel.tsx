@@ -1,9 +1,11 @@
 import { Bar,Pie } from "react-chartjs-2";
-import { useMemo } from "react";
+import { useState } from "react";
 import { useImmer } from "use-immer";
 import { ChartData,ChartOptions } from "chart.js";
 import { useEffect } from "react";
 import {ChartPie,ChartBar} from "@phosphor-icons/react";
+
+import { ToggleControlLine,ControlLineButtonConfig } from "components/toggle-control-line/toggle-control-line";
 
 import { convertToBarDataTotalTime,convertToBarDataAverageTime,bardataToPiedata,
   splitPieData } from "lib/chartjs-lib";
@@ -18,9 +20,13 @@ interface TagBreakdownAnalysisPanelProps
   tagAnalysis:TagBreakdown
 }
 
+type ChartMode="bar"|"pie"
+
 /** analysis ui for a single tag breakdown */
 export function TagBreakdownAnalysisPanel(props:TagBreakdownAnalysisPanelProps):JSX.Element
 {
+  const [chartMode,setChartMode]=useState<ChartMode>("bar");
+
   const [totalTimeBarData,setTotalTimeBarData]=useImmer<ChartData<"bar",BarData[]>>({
     datasets:[]
   });
@@ -54,6 +60,10 @@ export function TagBreakdownAnalysisPanel(props:TagBreakdownAnalysisPanelProps):
 
   });
 
+
+
+
+  // --- effects ---
   // update bar data on tag analysis changing
   useEffect(()=>{
     const listdata:TimeEventAnalysis2[]=sortTagAnalysisByDate(
@@ -103,6 +113,28 @@ export function TagBreakdownAnalysisPanel(props:TagBreakdownAnalysisPanelProps):
     });
   },[props.tagAnalysis]);
 
+
+
+  // --- handlers ---
+  /** chart mode changed from control line */
+  function h_chartModeChange(newMode:ChartMode):void
+  {
+    setChartMode(newMode);
+  }
+
+
+  // --- render ---
+  const chartSwitchControlLineButtons:ControlLineButtonConfig[]=[
+    {
+      icon:<ChartBar/>,
+      value:"bar"
+    },
+    {
+      icon:<ChartPie/>,
+      value:"pie"
+    }
+  ];
+
   return <div className="tag-breakdown-analysis-panel">
     <h2>{props.tagAnalysis.tag}</h2>
 
@@ -112,17 +144,8 @@ export function TagBreakdownAnalysisPanel(props:TagBreakdownAnalysisPanelProps):
     </div>
 
     <div className="controls">
-      <div className="control-line">
-        <div className="description">Switch chart mode</div>
-        <div className="buttons">
-          <div className="button-wrap">
-            <ChartBar/>
-          </div>
-          <div className="button-wrap">
-            <ChartPie/>
-          </div>
-        </div>
-      </div>
+      <ToggleControlLine text="Switch chart mode" buttons={chartSwitchControlLineButtons}
+        selectedOption={chartMode} onSelectOption={h_chartModeChange}/>
     </div>
 
     <div className="charts">
