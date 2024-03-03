@@ -152,11 +152,17 @@ export function TagBreakdownAnalysisPanel(props:TagBreakdownAnalysisPanelProps):
     {
       return <>
         <div className="chart">
-          <Bar options={barconfig} data={totalTimeBarData}/>
+          <h3>Total Time</h3>
+          <div className="chart-contain">
+            <Bar options={barconfig} data={totalTimeBarData}/>
+          </div>
         </div>
 
         <div className="chart">
-          <Bar options={barconfig} data={averageTimeBarData}/>
+          <h3>Average Time</h3>
+          <div className="chart-contain">
+            <Bar options={barconfig} data={averageTimeBarData}/>
+          </div>
         </div>
       </>;
     }
@@ -165,11 +171,17 @@ export function TagBreakdownAnalysisPanel(props:TagBreakdownAnalysisPanelProps):
     {
       return <>
         <div className="chart pie">
-          <Pie options={pieconfig} data={totalTimePieData}/>
+          <h3>Total Time</h3>
+          <div className="chart-contain">
+            <Pie options={pieconfig} data={totalTimePieData}/>
+          </div>
         </div>
 
         <div className="chart pie">
-          <Pie options={pieconfig} data={averageTimePieData}/>
+          <h3>Average Time</h3>
+          <div className="chart-contain">
+            <Pie options={pieconfig} data={averageTimePieData}/>
+          </div>
         </div>
       </>;
     }
