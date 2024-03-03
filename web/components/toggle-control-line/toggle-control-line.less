@@ -31,14 +31,15 @@
             margin-right: 5px;
 
 
-            &.disabled
+            &.selected
             {
-                opacity: .4;
                 cursor: default;
+                color: #37a0ff;
+                background: #bbccff80;
 
-                &:hover
+                &:hover,&:active
                 {
-                    background: transparent;
+                    background: #bbccff80;
                 }
             }
 
@@ -51,6 +52,11 @@
             &:hover
             {
                 background: #ebebeb;
+            }
+
+            &:active
+            {
+                background: #c7c8cb;
             }
         }
     }

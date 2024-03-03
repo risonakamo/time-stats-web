@@ -144,7 +144,7 @@ export function TagBreakdownAnalysisPanel(props:TagBreakdownAnalysisPanelProps):
     </div>
 
     <div className="controls">
-      <ToggleControlLine text="Switch chart mode" buttons={chartSwitchControlLineButtons}
+      <ToggleControlLine text="Chart mode" buttons={chartSwitchControlLineButtons}
         selectedOption={chartMode} onSelectOption={h_chartModeChange}/>
     </div>
 
