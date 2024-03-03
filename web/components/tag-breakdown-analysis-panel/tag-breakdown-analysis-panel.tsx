@@ -39,6 +39,10 @@ export function TagBreakdownAnalysisPanel(props:TagBreakdownAnalysisPanelProps):
     datasets:[]
   });
 
+  const [averageTimePieData,setAverageTimePieData]=useImmer<ChartData<"pie",number[]>>({
+    datasets:[]
+  });
+
   const [barconfig,setBarconfig]=useImmer<ChartOptions<"bar">>({
     scales:{
       y:{
@@ -108,6 +112,23 @@ export function TagBreakdownAnalysisPanel(props:TagBreakdownAnalysisPanelProps):
       draft.labels=splitdata.labels;
     });
 
+    setAverageTimePieData((draft)=>{
+      var piedata:PieData[]=bardataToPiedata(convertToBarDataAverageTime(
+        listdata
+      ));
+
+      var splitdata:SplitPieData=splitPieData(piedata);
+
+      draft.datasets=[
+        {
+          data:splitdata.data,
+          label:props.tagAnalysis.tag
+        },
+      ];
+
+      draft.labels=splitdata.labels;
+    });
+
     setBarconfig((draft)=>{
       draft.scales!.x!.title!.text=props.tagAnalysis.tag;
     });
@@ -130,11 +151,11 @@ export function TagBreakdownAnalysisPanel(props:TagBreakdownAnalysisPanelProps):
     if (chartMode=="bar")
     {
       return <>
-        <div className="chart total-time-chart">
+        <div className="chart">
           <Bar options={barconfig} data={totalTimeBarData}/>
         </div>
 
-        <div className="chart average-time-chart">
+        <div className="chart">
           <Bar options={barconfig} data={averageTimeBarData}/>
         </div>
       </>;
@@ -143,8 +164,12 @@ export function TagBreakdownAnalysisPanel(props:TagBreakdownAnalysisPanelProps):
     else if (chartMode=="pie")
     {
       return <>
-        <div className="chart">
+        <div className="chart pie">
           <Pie options={pieconfig} data={totalTimePieData}/>
+        </div>
+
+        <div className="chart pie">
+          <Pie options={pieconfig} data={averageTimePieData}/>
         </div>
       </>;
     }
