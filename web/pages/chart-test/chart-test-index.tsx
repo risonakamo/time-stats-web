@@ -8,6 +8,7 @@ import _ from "lodash";
 import { TagBreakdownAnalysisPanel } from
   "components/tag-breakdown-analysis-panel/tag-breakdown-analysis-panel";
 import { DatasetInfoPanel } from "components/dataset-info-panel/dataset-info-panel";
+import { FileList } from "components/file-list/file-list";
 
 import { getAvailableTimeDatas,getTimeDatafile } from "apis/time-stat-api";
 
@@ -27,6 +28,8 @@ function ChartTestIndex():JSX.Element
 {
   // --- states ---
   const [selectedDataFileName,setSelectedDataFileName]=useState<string|null>(TEST_DATA_FILE_NAME);
+
+
 
   // --- querys ---
   // request the available time datas
@@ -97,6 +100,15 @@ function ChartTestIndex():JSX.Element
 
 
 
+  // --- handlers ---
+  /** file list selected a file. set the selected data file state */
+  function h_onFilelistSelect(newSelectedFile:string):void
+  {
+    setSelectedDataFileName(newSelectedFile);
+  }
+
+
+
 
 
   // --- render ---
@@ -124,7 +136,8 @@ function ChartTestIndex():JSX.Element
 
   return <>
     <section className="file-list">
-
+      <FileList files={availableTimeDatasQy.data} selectedFile={selectedDataFileName}
+        onSelect={h_onFilelistSelect}/>
     </section>
 
     <section className="contents">
