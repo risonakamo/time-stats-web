@@ -1,0 +1,60 @@
+.file-list
+{
+    width: 400px;
+
+    h2,p
+    {
+        margin: 0;
+    }
+
+    .entry
+    {
+        padding: 5px 10px;
+        margin: 0px 0;
+        cursor: pointer;
+        user-select: none;
+
+        h2
+        {
+            font-weight: 500;
+            font-size: 20px;
+        }
+
+        .info
+        {
+            margin-top: -3px;
+
+            p
+            {
+                font-size: 14px;
+                color: #7e7e7e;
+            }
+        }
+
+        &.selected
+        {
+            background: black;
+            cursor: default;
+
+            h2,p
+            {
+                color: white;
+            }
+
+            &:hover
+            {
+                background: black;
+            }
+        }
+
+        &:hover
+        {
+            background: #ececec;
+        }
+
+        &:active
+        {
+            background: #e0e0e0;
+        }
+    }
+}
