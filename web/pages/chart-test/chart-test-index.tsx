@@ -11,12 +11,11 @@ import { DatasetInfoPanel } from "components/dataset-info-panel/dataset-info-pan
 import { FileList } from "components/file-list/file-list";
 
 import { getAvailableTimeDatas,getTimeDatafile } from "apis/time-stat-api";
+import { getChartPageArgs,setSelectedUrlArg } from "apis/url-query";
 
 import "./chart-test-index.less";
 
 Chart.register(CategoryScale,LinearScale,BarElement,Title,Tooltip,Legend,Colors,ArcElement);
-
-const TEST_DATA_FILE_NAME:string="rouge.tsv";
 
 interface GetDatafileMqyArgs
 {
@@ -27,7 +26,7 @@ interface GetDatafileMqyArgs
 function ChartTestIndex():JSX.Element
 {
   // --- states ---
-  const [selectedDataFileName,setSelectedDataFileName]=useState<string|null>(TEST_DATA_FILE_NAME);
+  const [selectedDataFileName,setSelectedDataFileName]=useState<string|null>(null);
 
 
 
@@ -49,6 +48,11 @@ function ChartTestIndex():JSX.Element
     async mutationFn(args:GetDatafileMqyArgs):Promise<TimeDataFile>
     {
       return getTimeDatafile(args.dataFilename,args.dataFilters);
+    },
+
+    onError(err):void
+    {
+      console.log(err);
     }
   });
 
@@ -75,28 +79,34 @@ function ChartTestIndex():JSX.Element
 
 
   // --- effects ----
-  // on selected data file name change, request new data
+  // on selected data file name change, request new data. also change the url query
   useEffect(()=>{
     if (!selectedDataFileName)
     {
-      return
+      return;
     }
 
     getDatafileMqy.mutate({
       dataFilename:selectedDataFileName,
       dataFilters:[]
     });
+
+    setSelectedUrlArg(selectedDataFileName);
   },[selectedDataFileName]);
 
-  // test parsing the data into chart format
+  // on page load, set the selected data file name to the one in the args, if any
   useEffect(()=>{
-    if (!getDatafileMqy.data)
+    const args:ChartPageUrlArgs=getChartPageArgs();
+
+    if (!args.selected)
     {
       return;
     }
 
-    console.log("data update",getDatafileMqy.data);
-  },[getDatafileMqy.data]);
+    setSelectedDataFileName(args.selected);
+  },[]);
+
+
 
 
 
