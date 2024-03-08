@@ -27,6 +27,16 @@ function ChartTestIndex():JSX.Element
 {
   // --- states ---
   const [selectedDataFileName,setSelectedDataFileName]=useState<string|null>(null);
+  const [activeFilters,setActiveFilters]=useState<TagFilter[]>([
+    {
+      tag:"category",
+      value:"sk2"
+    },
+    {
+      tag:"item",
+      value:"3"
+    }
+  ]);
 
 
 
@@ -88,11 +98,11 @@ function ChartTestIndex():JSX.Element
 
     getDatafileMqy.mutate({
       dataFilename:selectedDataFileName,
-      dataFilters:[]
+      dataFilters:activeFilters
     });
 
     setSelectedUrlArg(selectedDataFileName);
-  },[selectedDataFileName]);
+  },[selectedDataFileName,activeFilters]);
 
   // on page load, set the selected data file name to the one in the args, if any
   useEffect(()=>{
