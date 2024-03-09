@@ -1,3 +1,5 @@
+import { FilterBubble } from "components/filter-bubble/filter-bubble";
+
 import { nanoToHours } from "lib/utils";
 
 import "./dataset-info-panel.less";
@@ -15,21 +17,8 @@ export function DatasetInfoPanel(props:DatasetInfoPanelProps):JSX.Element
     <h1>{props.datasetInfo.displayName}</h1>
 
     <div className="filters-display">
-      <div className="filter">
-        <div className="strikethrough"></div>
-        <div className="remove-icon"></div>
-        <p className="tag-name">Category</p>
-        <p className="ellipse">...</p>
-        <p>sk2</p>
-      </div>
-
-      <div className="filter">
-        <div className="strikethrough"></div>
-        <div className="remove-icon"></div>
-        <p className="tag-name">Item</p>
-        <p className="ellipse">...</p>
-        <p>3</p>
-      </div>
+      <FilterBubble tagName="Category" tagValue="sk2"/>
+      <FilterBubble tagName="item" tagValue="3"/>
     </div>
 
     <div className="info-box">
