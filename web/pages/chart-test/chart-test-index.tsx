@@ -4,6 +4,7 @@ import { Chart,CategoryScale,LinearScale,BarElement,Title,Colors,
 import {QueryClient,QueryClientProvider,useQuery,useMutation} from "@tanstack/react-query";
 import { useEffect,useMemo,useState } from "react";
 import _ from "lodash";
+import { useImmer } from "use-immer";
 
 import { TagBreakdownAnalysisPanel } from
   "components/tag-breakdown-analysis-panel/tag-breakdown-analysis-panel";
@@ -27,16 +28,7 @@ function ChartTestIndex():JSX.Element
 {
   // --- states ---
   const [selectedDataFileName,setSelectedDataFileName]=useState<string|null>(null);
-  const [activeFilters,setActiveFilters]=useState<TagFilter[]>([
-    {
-      tag:"category",
-      value:"sk2"
-    },
-    {
-      tag:"item",
-      value:"3"
-    }
-  ]);
+  const [activeFilters,setActiveFilters]=useImmer<TagFilter[]>([]);
 
 
 
@@ -127,6 +119,16 @@ function ChartTestIndex():JSX.Element
     setSelectedDataFileName(newSelectedFile);
   }
 
+  /** requested to remove tag filter. modify tag filter state to remove the target filter */
+  function h_tagFilterRemove(removeFilter:TagFilter):void
+  {
+    setActiveFilters((draft)=>{
+      _.remove(draft,(filter:TagFilter):boolean=>{
+        return filter.tag==removeFilter.tag && filter.value==removeFilter.value;
+      });
+    });
+  }
+
 
 
 
@@ -151,7 +153,8 @@ function ChartTestIndex():JSX.Element
       return <h1>no data loaded</h1>;
     }
 
-    return <DatasetInfoPanel datafile={getDatafileMqy.data} datasetInfo={currentDatafileInfo}/>;
+    return <DatasetInfoPanel datafile={getDatafileMqy.data} datasetInfo={currentDatafileInfo}
+      activeFilters={activeFilters} onTagFilterRemove={h_tagFilterRemove}/>;
   }
 
   return <>
