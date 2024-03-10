@@ -14,6 +14,8 @@ import { FileList } from "components/file-list/file-list";
 import { getAvailableTimeDatas,getTimeDatafile } from "apis/time-stat-api";
 import { getChartPageArgs,setSelectedUrlArg } from "apis/url-query";
 
+import { addTagFilter } from "lib/utils";
+
 import "./chart-test-index.less";
 
 Chart.register(CategoryScale,LinearScale,BarElement,Title,Tooltip,Legend,Colors,ArcElement);
@@ -110,8 +112,6 @@ function ChartTestIndex():JSX.Element
 
 
 
-
-
   // --- handlers ---
   /** file list selected a file. set the selected data file state */
   function h_onFilelistSelect(newSelectedFile:string):void
@@ -129,6 +129,14 @@ function ChartTestIndex():JSX.Element
     });
   }
 
+  /** analysis panel requesting to add a tag filter. add the filter */
+  function h_analysisPanelAddFilter(newFilter:TagFilter):void
+  {
+    setActiveFilters((draft)=>{
+      return addTagFilter(draft,newFilter);
+    });
+  }
+
 
 
 
@@ -140,7 +148,8 @@ function ChartTestIndex():JSX.Element
     return _.map(
       getDatafileMqy.data?.tagsAnalysis,
       (tagBreakdown:TagBreakdown,tagName:string):JSX.Element=>{
-        return <TagBreakdownAnalysisPanel key={tagName} tagAnalysis={tagBreakdown}/>
+        return <TagBreakdownAnalysisPanel key={tagName} tagAnalysis={tagBreakdown}
+          onTagFilterCreate={h_analysisPanelAddFilter}/>
       }
     );
   }

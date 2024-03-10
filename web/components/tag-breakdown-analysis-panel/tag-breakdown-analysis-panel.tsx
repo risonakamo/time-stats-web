@@ -20,6 +20,9 @@ import "./tag-breakdown-analysis-panel.less";
 interface TagBreakdownAnalysisPanelProps
 {
   tagAnalysis:TagBreakdown
+
+  // this analysis panel created a tag filter based on clicks
+  onTagFilterCreate(tagFilter:TagFilter):void
 }
 
 type ChartMode="bar"|"pie"
@@ -116,9 +119,13 @@ export function TagBreakdownAnalysisPanel(props:TagBreakdownAnalysisPanelProps):
     setChartMode(newMode);
   }
 
+  /** clicked on bar in bar chart. trigger tag filter event */
   function h_barClick(chartLabel:string,selectedTagValue:string):void
   {
-    console.log(selectedTagValue);
+    props.onTagFilterCreate({
+      tag:props.tagAnalysis.tag,
+      value:selectedTagValue,
+    });
   }
 
 
