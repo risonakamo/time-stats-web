@@ -113,9 +113,16 @@ function ChartTestIndex():JSX.Element
 
 
   // --- handlers ---
-  /** file list selected a file. set the selected data file state */
+  /** file list selected a file. set the selected data file state, if it is different from the
+   *  current. reset active filters. */
   function h_onFilelistSelect(newSelectedFile:string):void
   {
+    if (newSelectedFile==selectedDataFileName)
+    {
+      return;
+    }
+
+    setActiveFilters([]);
     setSelectedDataFileName(newSelectedFile);
   }
 
