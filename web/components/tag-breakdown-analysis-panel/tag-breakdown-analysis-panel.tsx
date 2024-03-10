@@ -29,10 +29,6 @@ export function TagBreakdownAnalysisPanel(props:TagBreakdownAnalysisPanelProps):
 {
   const [chartMode,setChartMode]=useState<ChartMode>("bar");
 
-  const [averageTimeBarData,setAverageTimeBarData]=useImmer<ChartData<"bar",BarData[]>>({
-    datasets:[]
-  });
-
   const [totalTimePieData,setTotalTimePieData]=useImmer<ChartData<"pie",number[]>>({
     datasets:[]
   });
@@ -41,29 +37,24 @@ export function TagBreakdownAnalysisPanel(props:TagBreakdownAnalysisPanelProps):
     datasets:[]
   });
 
-  const [barconfig,setBarconfig]=useImmer<ChartOptions<"bar">>({
-    scales:{
-      y:{
-        title:{
-          display:true,
-          text:"Hours",
-        }
-      },
-      x:{
-        title:{
-          display:true,
-          text:"missing tag value"
-        }
-      }
-    }
-  });
-
   const [pieconfig,setPieconfig]=useImmer<ChartOptions<"pie">>({
 
   });
 
+
+
+
+  // ---- derived states ----
   const totalTimeData:BarData[]=useMemo(()=>{
     return convertToBarDataTotalTime(
+      sortTagAnalysisByDate(
+        tagAnalysisDictToList(
+          props.tagAnalysis.valuesAnalysis
+    )));
+  },[props.tagAnalysis.valuesAnalysis]);
+
+  const averageTimeData:BarData[]=useMemo(()=>{
+    return convertToBarDataAverageTime(
       sortTagAnalysisByDate(
         tagAnalysisDictToList(
           props.tagAnalysis.valuesAnalysis
@@ -79,16 +70,6 @@ export function TagBreakdownAnalysisPanel(props:TagBreakdownAnalysisPanelProps):
     const listdata:TimeEventAnalysis2[]=sortTagAnalysisByDate(
       tagAnalysisDictToList(props.tagAnalysis.valuesAnalysis)
     );
-
-    setAverageTimeBarData((draft)=>{
-      draft.datasets=[{
-        data:convertToBarDataAverageTime(
-          listdata
-        ),
-        label:"average time",
-        backgroundColor:"#de5261"
-      }];
-    });
 
     setTotalTimePieData((draft)=>{
       var piedata:PieData[]=bardataToPiedata(convertToBarDataTotalTime(
@@ -123,11 +104,8 @@ export function TagBreakdownAnalysisPanel(props:TagBreakdownAnalysisPanelProps):
 
       draft.labels=splitdata.labels;
     });
-
-    setBarconfig((draft)=>{
-      draft.scales!.x!.title!.text=props.tagAnalysis.tag;
-    });
   },[props.tagAnalysis]);
+
 
 
 
@@ -148,12 +126,7 @@ export function TagBreakdownAnalysisPanel(props:TagBreakdownAnalysisPanelProps):
       return <>
         <TagAnalysisChart chartLabel="Total Time" barColour="#6086b2" bardata={totalTimeData}/>
 
-        <div className="chart">
-          <h3>Average Time</h3>
-          <div className="chart-contain">
-            <Bar options={barconfig} data={averageTimeBarData}/>
-          </div>
-        </div>
+        <TagAnalysisChart chartLabel="Average Time" barColour="#de5261" bardata={averageTimeData}/>
       </>;
     }
 
