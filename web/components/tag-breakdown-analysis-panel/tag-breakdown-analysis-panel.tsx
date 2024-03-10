@@ -116,6 +116,11 @@ export function TagBreakdownAnalysisPanel(props:TagBreakdownAnalysisPanelProps):
     setChartMode(newMode);
   }
 
+  function h_barClick(chartLabel:string,selectedTagValue:string):void
+  {
+    console.log(selectedTagValue);
+  }
+
 
   // --- render ---
   /** render charts section. conditionally renders based on the current chart mode */
@@ -124,9 +129,11 @@ export function TagBreakdownAnalysisPanel(props:TagBreakdownAnalysisPanelProps):
     if (chartMode=="bar")
     {
       return <>
-        <TagAnalysisBarChart chartLabel="Total Time" barColour="#6086b2" bardata={totalTimeData}/>
+        <TagAnalysisBarChart chartLabel="Total Time" barColour="#6086b2" bardata={totalTimeData}
+          onBarClick={h_barClick}/>
 
-        <TagAnalysisBarChart chartLabel="Average Time" barColour="#de5261" bardata={averageTimeData}/>
+        <TagAnalysisBarChart chartLabel="Average Time" barColour="#de5261" bardata={averageTimeData}
+          onBarClick={h_barClick}/>
       </>;
     }
 

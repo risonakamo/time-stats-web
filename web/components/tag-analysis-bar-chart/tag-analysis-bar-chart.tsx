@@ -1,17 +1,7 @@
-import { Bar,Pie } from "react-chartjs-2";
-import { useState } from "react";
+import { Bar } from "react-chartjs-2";
 import { useImmer } from "use-immer";
-import { ChartData,ChartOptions } from "chart.js";
+import { ChartData,ChartOptions,ChartEvent,ActiveElement } from "chart.js";
 import { useEffect } from "react";
-import {ChartPie,ChartBar} from "@phosphor-icons/react";
-
-import { ToggleControlLine,ControlLineButtonConfig } from "components/toggle-control-line/toggle-control-line";
-
-import { convertToBarDataTotalTime,convertToBarDataAverageTime,bardataToPiedata,
-  splitPieData } from "lib/chartjs-lib";
-import { tagAnalysisDictToList,sortTagAnalysisByTotalTime,
-  sortTagAnalysisByDate } from "lib/time-stat-api-lib";
-import { nanoToHours } from "lib/utils";
 
 import "./tag-analysis-bar-chart.less";
 
@@ -20,6 +10,8 @@ interface TagAnalysisBarChartProps
   bardata:BarData[]
   chartLabel:string
   barColour:string
+
+  onBarClick(chartLabel:string,value:string):void
 }
 
 export function TagAnalysisBarChart(props:TagAnalysisBarChartProps):JSX.Element
@@ -38,7 +30,21 @@ export function TagAnalysisBarChart(props:TagAnalysisBarChartProps):JSX.Element
           text:"missing tag value"
         }
       }
-    }
+    },
+
+    // clicked on bar in chart. trigger event with the tag value of the clicked bar
+    onClick(event:ChartEvent,elements:ActiveElement[]):void
+    {
+      if (!elements.length)
+      {
+        return;
+      }
+
+      props.onBarClick(
+        props.chartLabel,
+        props.bardata[elements[0].index].x
+      );
+    },
   });
 
   const [barData,setBarData]=useImmer<ChartData<"bar",BarData[]>>({
