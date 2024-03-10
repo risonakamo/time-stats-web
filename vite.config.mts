@@ -36,7 +36,7 @@ export default defineConfig({
 
         rollupOptions:{
             input:{
-                "chart test":`${__dirname}/web/html/index.html`,
+                "chart-test":`${__dirname}/web/html/index.html`,
             },
 
             onLog(level:LogLevel,log:RollupLog,handler:LogHandler):void
