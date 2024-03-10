@@ -1,11 +1,13 @@
 import { Bar,Pie } from "react-chartjs-2";
-import { useState } from "react";
+import { useState,useMemo } from "react";
 import { useImmer } from "use-immer";
 import { ChartData,ChartOptions } from "chart.js";
 import { useEffect } from "react";
 import {ChartPie,ChartBar} from "@phosphor-icons/react";
 
-import { ToggleControlLine,ControlLineButtonConfig } from "components/toggle-control-line/toggle-control-line";
+import { ToggleControlLine,ControlLineButtonConfig }
+  from "components/toggle-control-line/toggle-control-line";
+import { TagAnalysisChart } from "components/tag-analysis-chart/tag-analysis-chart";
 
 import { convertToBarDataTotalTime,convertToBarDataAverageTime,bardataToPiedata,
   splitPieData } from "lib/chartjs-lib";
@@ -26,10 +28,6 @@ type ChartMode="bar"|"pie"
 export function TagBreakdownAnalysisPanel(props:TagBreakdownAnalysisPanelProps):JSX.Element
 {
   const [chartMode,setChartMode]=useState<ChartMode>("bar");
-
-  const [totalTimeBarData,setTotalTimeBarData]=useImmer<ChartData<"bar",BarData[]>>({
-    datasets:[]
-  });
 
   const [averageTimeBarData,setAverageTimeBarData]=useImmer<ChartData<"bar",BarData[]>>({
     datasets:[]
@@ -64,6 +62,14 @@ export function TagBreakdownAnalysisPanel(props:TagBreakdownAnalysisPanelProps):
 
   });
 
+  const totalTimeData:BarData[]=useMemo(()=>{
+    return convertToBarDataTotalTime(
+      sortTagAnalysisByDate(
+        tagAnalysisDictToList(
+          props.tagAnalysis.valuesAnalysis
+    )));
+  },[props.tagAnalysis.valuesAnalysis]);
+
 
 
 
@@ -73,17 +79,6 @@ export function TagBreakdownAnalysisPanel(props:TagBreakdownAnalysisPanelProps):
     const listdata:TimeEventAnalysis2[]=sortTagAnalysisByDate(
       tagAnalysisDictToList(props.tagAnalysis.valuesAnalysis)
     );
-
-    setTotalTimeBarData((draft)=>{
-      draft.datasets=[
-        {
-          data:convertToBarDataTotalTime(
-            listdata
-          ),
-          label:"total time",
-        },
-      ];
-    });
 
     setAverageTimeBarData((draft)=>{
       draft.datasets=[{
@@ -151,12 +146,7 @@ export function TagBreakdownAnalysisPanel(props:TagBreakdownAnalysisPanelProps):
     if (chartMode=="bar")
     {
       return <>
-        <div className="chart">
-          <h3>Total Time</h3>
-          <div className="chart-contain">
-            <Bar options={barconfig} data={totalTimeBarData}/>
-          </div>
-        </div>
+        <TagAnalysisChart chartLabel="Total Time" barColour="#6086b2" bardata={totalTimeData}/>
 
         <div className="chart">
           <h3>Average Time</h3>
