@@ -7,7 +7,7 @@ import {ChartPie,ChartBar} from "@phosphor-icons/react";
 
 import { ToggleControlLine,ControlLineButtonConfig }
   from "components/toggle-control-line/toggle-control-line";
-import { TagAnalysisChart } from "components/tag-analysis-chart/tag-analysis-chart";
+import { TagAnalysisBarChart } from "components/tag-analysis-bar-chart/tag-analysis-bar-chart";
 
 import { convertToBarDataTotalTime,convertToBarDataAverageTime,bardataToPiedata,
   splitPieData } from "lib/chartjs-lib";
@@ -124,9 +124,9 @@ export function TagBreakdownAnalysisPanel(props:TagBreakdownAnalysisPanelProps):
     if (chartMode=="bar")
     {
       return <>
-        <TagAnalysisChart chartLabel="Total Time" barColour="#6086b2" bardata={totalTimeData}/>
+        <TagAnalysisBarChart chartLabel="Total Time" barColour="#6086b2" bardata={totalTimeData}/>
 
-        <TagAnalysisChart chartLabel="Average Time" barColour="#de5261" bardata={averageTimeData}/>
+        <TagAnalysisBarChart chartLabel="Average Time" barColour="#de5261" bardata={averageTimeData}/>
       </>;
     }
 

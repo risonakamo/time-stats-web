@@ -13,16 +13,16 @@ import { tagAnalysisDictToList,sortTagAnalysisByTotalTime,
   sortTagAnalysisByDate } from "lib/time-stat-api-lib";
 import { nanoToHours } from "lib/utils";
 
-import "./tag-analysis-chart.less";
+import "./tag-analysis-bar-chart.less";
 
-interface TagAnalysisChartProps
+interface TagAnalysisBarChartProps
 {
   bardata:BarData[]
   chartLabel:string
   barColour:string
 }
 
-export function TagAnalysisChart(props:TagAnalysisChartProps):JSX.Element
+export function TagAnalysisBarChart(props:TagAnalysisBarChartProps):JSX.Element
 {
   const [barconfig,setBarconfig]=useImmer<ChartOptions<"bar">>({
     scales:{
@@ -62,7 +62,7 @@ export function TagAnalysisChart(props:TagAnalysisChartProps):JSX.Element
     });
   },[props.bardata]);
 
-  return <div className="tag-analysis-chart">
+  return <div className="tag-analysis-bar-chart">
     <h3>{props.chartLabel}</h3>
     <div className="chart-contain">
       <Bar options={barconfig} data={barData}/>
