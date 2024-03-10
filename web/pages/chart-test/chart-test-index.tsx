@@ -46,18 +46,24 @@ function ChartTestIndex():JSX.Element
     },
   });
 
-  // request a data file. no effects - the currently loaded data file is just whatever
-  // is in the data field of this qy
-  const getDatafileMqy=useMutation<TimeDataFile,Error,GetDatafileMqyArgs>({
-    async mutationFn(args:GetDatafileMqyArgs):Promise<TimeDataFile>
-    {
-      return getTimeDatafile(args.dataFilename,args.dataFilters);
-    },
+  // request a data file
+  const getDatafileQy=useQuery<TimeDataFile|null>({
+    queryKey:["datafile"],
+    initialData:null,
 
-    onError(err):void
+    refetchOnMount:false,
+    refetchOnReconnect:false,
+    refetchOnWindowFocus:false,
+
+    async queryFn():Promise<TimeDataFile|null>
     {
-      console.log(err);
-    }
+      if (!selectedDataFileName)
+      {
+        return null;
+      }
+
+      return getTimeDatafile(selectedDataFileName,activeFilters);
+    },
   });
 
 
@@ -66,7 +72,7 @@ function ChartTestIndex():JSX.Element
   // the current datafile info corresponding with the selected datafile name. changes when the selected
   // datafile name changes or the data changes
   const currentDatafileInfo:TimeStatDataFile|undefined=useMemo(()=>{
-    if (!getDatafileMqy.data)
+    if (!getDatafileQy.data)
     {
       return undefined;
     }
@@ -75,7 +81,7 @@ function ChartTestIndex():JSX.Element
       return datafile.filename==selectedDataFileName;
     });
   },[
-    getDatafileMqy.data,
+    getDatafileQy.data,
     selectedDataFileName,
     availableTimeDatasQy.data
   ]);
@@ -83,17 +89,15 @@ function ChartTestIndex():JSX.Element
 
 
   // --- effects ----
-  // on selected data file name change, request new data. also change the url query
+  // on selected data file name change, request new data. change the page's url ?querys to reflect
+  // the selected data file
   useEffect(()=>{
     if (!selectedDataFileName)
     {
       return;
     }
 
-    getDatafileMqy.mutate({
-      dataFilename:selectedDataFileName,
-      dataFilters:activeFilters
-    });
+    getDatafileQy.refetch();
 
     setSelectedUrlArg(selectedDataFileName);
   },[selectedDataFileName,activeFilters]);
@@ -153,7 +157,7 @@ function ChartTestIndex():JSX.Element
   function r_tagAnalysisPanels():JSX.Element[]
   {
     return _.map(
-      getDatafileMqy.data?.tagsAnalysis,
+      getDatafileQy.data?.tagsAnalysis,
       (tagBreakdown:TagBreakdown,tagName:string):JSX.Element=>{
         return <TagBreakdownAnalysisPanel key={tagName} tagAnalysis={tagBreakdown}
           onTagFilterCreate={h_analysisPanelAddFilter}/>
@@ -164,12 +168,12 @@ function ChartTestIndex():JSX.Element
   /** render the info panel zone. only renders if have enough information */
   function r_infoPanel():JSX.Element
   {
-    if (!getDatafileMqy.data || !currentDatafileInfo)
+    if (!getDatafileQy.data || !currentDatafileInfo)
     {
       return <h1>no data loaded</h1>;
     }
 
-    return <DatasetInfoPanel datafile={getDatafileMqy.data} datasetInfo={currentDatafileInfo}
+    return <DatasetInfoPanel datafile={getDatafileQy.data} datasetInfo={currentDatafileInfo}
       activeFilters={activeFilters} onTagFilterRemove={h_tagFilterRemove}/>;
   }
 
