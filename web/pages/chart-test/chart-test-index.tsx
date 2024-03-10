@@ -20,12 +20,6 @@ import "./chart-test-index.less";
 
 Chart.register(CategoryScale,LinearScale,BarElement,Title,Tooltip,Legend,Colors,ArcElement);
 
-interface GetDatafileMqyArgs
-{
-  dataFilename:string
-  dataFilters:TagFilter[]
-}
-
 function ChartTestIndex():JSX.Element
 {
   // --- states ---
@@ -70,7 +64,8 @@ function ChartTestIndex():JSX.Element
 
   // ---- derived state ----
   // the current datafile info corresponding with the selected datafile name. changes when the selected
-  // datafile name changes or the data changes
+  // datafile name changes or the data changes. made from the selected filename and the list of
+  // retrieved data files
   const currentDatafileInfo:TimeStatDataFile|undefined=useMemo(()=>{
     if (!getDatafileQy.data)
     {
@@ -85,6 +80,13 @@ function ChartTestIndex():JSX.Element
     selectedDataFileName,
     availableTimeDatasQy.data
   ]);
+
+  // set of names of tags that are being actively filtered
+  const activeFilterTagNames:Set<string>=useMemo(()=>{
+    return new Set(_.map(activeFilters,(filter:TagFilter):string=>{
+      return filter.tag;
+    }));
+  },[activeFilters]);
 
 
 
@@ -153,16 +155,25 @@ function ChartTestIndex():JSX.Element
 
 
   // --- render ---
-  /** render a tag analysis panel for every tag breakdown */
+  /** render a tag analysis panel for every tag breakdown, except ones that have filters
+   *  enabled on them */
   function r_tagAnalysisPanels():JSX.Element[]
   {
-    return _.map(
-      getDatafileQy.data?.tagsAnalysis,
+    return _(getDatafileQy.data?.tagsAnalysis)
+
+    // filter out all items that filters are active for
+    .pickBy((tagBreakdown:TagBreakdown,tagName:string):boolean=>{
+      return !activeFilterTagNames.has(tagName);
+    })
+
+    // create panel for remaining tags
+    .map(
       (tagBreakdown:TagBreakdown,tagName:string):JSX.Element=>{
         return <TagBreakdownAnalysisPanel key={tagName} tagAnalysis={tagBreakdown}
           onTagFilterCreate={h_analysisPanelAddFilter}/>
       }
-    );
+    )
+    .value();
   }
 
   /** render the info panel zone. only renders if have enough information */
