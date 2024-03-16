@@ -2,7 +2,7 @@ import _ from "lodash";
 
 import { FilterBubble } from "components/filter-bubble/filter-bubble";
 
-import { nanoToHours } from "lib/utils";
+import { nanoToHours,truncateHour } from "lib/utils";
 
 import "./dataset-info-panel.less";
 
@@ -42,8 +42,9 @@ export function DatasetInfoPanel(props:DatasetInfoPanelProps):JSX.Element
     </div>
 
     <div className="info-box">
-      <p>Total time: {nanoToHours(props.datafile.topAnalysis.totalTime)}</p>
-      <p>Average time: {nanoToHours(props.datafile.topAnalysis.averageTime)}</p>
+      <p>Total time: {truncateHour(nanoToHours(props.datafile.topAnalysis.totalTime))}</p>
+      <p>Average time: {truncateHour(nanoToHours(props.datafile.topAnalysis.averageTime))}</p>
+      <p>Number of Events: {props.datafile.topAnalysis.numEvents}</p>
       <p>Last update: ---</p>
     </div>
   </div>;

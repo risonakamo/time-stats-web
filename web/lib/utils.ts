@@ -23,3 +23,9 @@ export function addTagFilter(filters:TagFilter[],newFilter:TagFilter):TagFilter[
 
     return finalFilters;
 }
+
+/** truncate hour to 2 decs */
+export function truncateHour(hours:number):number
+{
+  return parseFloat(hours.toFixed(2))
+}

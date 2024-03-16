@@ -38,7 +38,10 @@ interface TimeEventAnalysis
     totalTime:number
     averageTime:number
 
+    numEvents:number
+
     earliestEventDate:number
+    latestEventDate:number
 }
 
 /** breakdown analysis for a particular tag */

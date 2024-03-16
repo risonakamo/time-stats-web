@@ -116,6 +116,27 @@ function ChartTestIndex():JSX.Element
     setSelectedDataFileName(args.selected);
   },[]);
 
+  // global key controls
+  useEffect(()=>{
+    window.onkeydown=(e:KeyboardEvent)=>{
+      if (e.key=="Escape")
+      {
+        popLastFilter();
+      }
+    };
+  },[]);
+
+
+
+  // --- state funcs ---
+  // remove the last filter in the active filters list
+  function popLastFilter():void
+  {
+    setActiveFilters((draft)=>{
+      draft.pop();
+    });
+  }
+
 
 
   // --- handlers ---
