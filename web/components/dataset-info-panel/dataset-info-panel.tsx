@@ -27,6 +27,12 @@ export function DatasetInfoPanel(props:DatasetInfoPanelProps):JSX.Element
     props.onRefresh(props.datasetInfo);
   }
 
+  /** clicked url button. open sheets url of data file */
+  function h_urlClick():void
+  {
+
+  }
+
   /** render list of filter bubbles */
   function r_filterBubbles():JSX.Element[]
   {
@@ -47,8 +53,10 @@ export function DatasetInfoPanel(props:DatasetInfoPanelProps):JSX.Element
     <h1>{props.datasetInfo.displayName}</h1>
 
     <div className="control-buttons">
-      <Button1 text="Refresh" icon={<ArrowClockwise className="icon"/>}/>
-      <Button1 text="Open Url" icon={<ArrowSquareOut className="icon"/>}/>
+      <Button1 text="Refresh" icon={<ArrowClockwise className="icon"/>}
+        onClick={h_refreshClick}/>
+      <Button1 text="Open Sheets" icon={<ArrowSquareOut className="icon"/>}
+        onClick={h_urlClick}/>
     </div>
 
     <div className="filters-display">
