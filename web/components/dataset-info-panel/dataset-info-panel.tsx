@@ -1,6 +1,8 @@
 import _ from "lodash";
+import {ArrowClockwise, ArrowSquareOut} from "@phosphor-icons/react";
 
 import { FilterBubble } from "components/filter-bubble/filter-bubble";
+import { Button1 } from "components/button1/button1";
 
 import { nanoToHours,truncateHour } from "lib/utils";
 
@@ -43,7 +45,11 @@ export function DatasetInfoPanel(props:DatasetInfoPanelProps):JSX.Element
 
   return <div className="dataset-info-panel">
     <h1>{props.datasetInfo.displayName}</h1>
-    <button onClick={h_refreshClick}>refresh</button>
+
+    <div className="control-buttons">
+      <Button1 text="Refresh" icon={<ArrowClockwise className="icon"/>}/>
+      <Button1 text="Open Url" icon={<ArrowSquareOut className="icon"/>}/>
+    </div>
 
     <div className="filters-display">
       {r_filterBubbles()}
