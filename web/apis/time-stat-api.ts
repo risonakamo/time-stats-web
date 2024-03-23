@@ -22,3 +22,13 @@ export async function getTimeDatafile(filename:string,filters:TagFilter[]):Promi
 
     return (await ax.post("/get-data",request)).data;
 }
+
+/** request a datafile to be updated */
+export async function updateDataFile(filename:string):Promise<void>
+{
+    const request:UpdateDataRequest={
+        filename
+    };
+
+    return ax.post("/update-data",request);
+}

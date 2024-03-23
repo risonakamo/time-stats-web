@@ -11,7 +11,7 @@ import { TagBreakdownAnalysisPanel } from
 import { DatasetInfoPanel } from "components/dataset-info-panel/dataset-info-panel";
 import { FileList } from "components/file-list/file-list";
 
-import { getAvailableTimeDatas,getTimeDatafile } from "apis/time-stat-api";
+import { getAvailableTimeDatas,getTimeDatafile,updateDataFile } from "apis/time-stat-api";
 import { getChartPageArgs,setSelectedUrlArg } from "apis/url-query";
 
 import { addTagFilter } from "lib/utils";
@@ -171,6 +171,12 @@ function ChartTestIndex():JSX.Element
     });
   }
 
+  /** clicked on datafile refresh button. trigger refresh of the target file */
+  function h_datafileRefresh(datafile:DataFileInfo2):void
+  {
+    updateDataFile(datafile.filename);
+  }
+
 
 
 
@@ -206,7 +212,7 @@ function ChartTestIndex():JSX.Element
     }
 
     return <DatasetInfoPanel datafile={getDatafileQy.data} datasetInfo={currentDatafileInfo}
-      activeFilters={activeFilters} onTagFilterRemove={h_tagFilterRemove}/>;
+      activeFilters={activeFilters} onTagFilterRemove={h_tagFilterRemove} onRefresh={h_datafileRefresh}/>;
   }
 
   return <>

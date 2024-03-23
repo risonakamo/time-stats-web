@@ -13,11 +13,18 @@ interface DatasetInfoPanelProps
   activeFilters:TagFilter[]
 
   onTagFilterRemove(filter:TagFilter):void
+  onRefresh(datafile:DataFileInfo2):void
 }
 
 /** component that displays information about a dataset */
 export function DatasetInfoPanel(props:DatasetInfoPanelProps):JSX.Element
 {
+  /** clicked refresh button. trigger refresh event with the datafile */
+  function h_refreshClick():void
+  {
+    props.onRefresh(props.datasetInfo);
+  }
+
   /** render list of filter bubbles */
   function r_filterBubbles():JSX.Element[]
   {
@@ -36,6 +43,7 @@ export function DatasetInfoPanel(props:DatasetInfoPanelProps):JSX.Element
 
   return <div className="dataset-info-panel">
     <h1>{props.datasetInfo.displayName}</h1>
+    <button onClick={h_refreshClick}>refresh</button>
 
     <div className="filters-display">
       {r_filterBubbles()}

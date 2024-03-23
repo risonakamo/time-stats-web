@@ -64,3 +64,9 @@ interface GetDataRequest
     filename:string
     filters:TagFilter[]
 }
+
+/** request to update a datafile */
+interface UpdateDataRequest
+{
+    filename:string
+}
