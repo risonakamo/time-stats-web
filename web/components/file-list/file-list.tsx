@@ -5,7 +5,7 @@ import "./file-list.less";
 
 interface FileListProps
 {
-  files:TimeStatDataFile[]
+  files:DataFileInfo2[]
 
   // filename that is currently selected
   selectedFile:string|null
@@ -20,7 +20,7 @@ export function FileList(props:FileListProps):JSX.Element
   /** render the entries */
   function r_entries():JSX.Element[]
   {
-    return _.map(props.files,(datafile:TimeStatDataFile):JSX.Element=>{
+    return _.map(props.files,(datafile:DataFileInfo2):JSX.Element=>{
       const selected:boolean=datafile.filename==props.selectedFile;
 
       /** clicked on entry. trigger on select */

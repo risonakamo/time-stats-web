@@ -30,11 +30,11 @@ function ChartTestIndex():JSX.Element
 
   // --- querys ---
   // request the available time datas
-  const availableTimeDatasQy=useQuery<TimeStatDataFile[]>({
+  const availableTimeDatasQy=useQuery<DataFileInfo2[]>({
     queryKey:["avail-datas"],
     initialData:[],
 
-    async queryFn():Promise<TimeStatDataFile[]>
+    async queryFn():Promise<DataFileInfo2[]>
     {
       return getAvailableTimeDatas();
     },
@@ -66,13 +66,13 @@ function ChartTestIndex():JSX.Element
   // the current datafile info corresponding with the selected datafile name. changes when the selected
   // datafile name changes or the data changes. made from the selected filename and the list of
   // retrieved data files
-  const currentDatafileInfo:TimeStatDataFile|undefined=useMemo(()=>{
+  const currentDatafileInfo:DataFileInfo2|undefined=useMemo(()=>{
     if (!getDatafileQy.data)
     {
       return undefined;
     }
 
-    return _.find(availableTimeDatasQy.data,(datafile:TimeStatDataFile):boolean=>{
+    return _.find(availableTimeDatasQy.data,(datafile:DataFileInfo2):boolean=>{
       return datafile.filename==selectedDataFileName;
     });
   },[

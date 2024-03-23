@@ -8,7 +8,7 @@ import "./dataset-info-panel.less";
 
 interface DatasetInfoPanelProps
 {
-  datasetInfo:TimeStatDataFile
+  datasetInfo:DataFileInfo2
   datafile:TimeDataFile
   activeFilters:TagFilter[]
 

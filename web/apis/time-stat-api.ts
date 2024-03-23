@@ -7,7 +7,7 @@ const ax=axios.create({
 });
 
 /** get all available data files */
-export async function getAvailableTimeDatas():Promise<TimeStatDataFile[]>
+export async function getAvailableTimeDatas():Promise<DataFileInfo2[]>
 {
     return (await ax.get("/data-names")).data;
 }

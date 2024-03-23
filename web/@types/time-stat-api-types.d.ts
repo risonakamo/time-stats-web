@@ -12,10 +12,13 @@ type TagBreakdownsDict=Record<string,TagBreakdown>
 type TagValueAnalysisDict=Record<string,TimeEventAnalysis>
 
 /** an available time data file */
-interface TimeStatDataFile
+interface DataFileInfo2
 {
     filename:string
     displayName:string
+
+    mainSheetId:string
+    subSheetId:string
 }
 
 /** a tag filter */
