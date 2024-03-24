@@ -17,8 +17,7 @@ interface DataFileInfo2
     filename:string
     displayName:string
 
-    mainSheetId:string
-    subSheetId:string
+    sheetUrl:string
 }
 
 /** a tag filter */
