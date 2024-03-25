@@ -54,14 +54,17 @@ export function DatasetInfoPanel(props:DatasetInfoPanelProps):JSX.Element
     });
   }
 
+
+  const controlButtonsDisabled:boolean=props.datasetInfo.sheetUrl.length==0;
+
   return <div className="dataset-info-panel">
     <h1>{props.datasetInfo.displayName}</h1>
 
     <div className="control-buttons">
       <Button1 text="Refresh" icon={<ArrowClockwise className="icon"/>}
-        onClick={h_refreshClick}/>
+        onClick={h_refreshClick} disabled={controlButtonsDisabled}/>
       <Button1 text="Open Sheets" icon={<ArrowSquareOut className="icon"/>}
-        onClick={h_urlClick}/>
+        onClick={h_urlClick} disabled={controlButtonsDisabled}/>
     </div>
 
     <div className="filters-display">
