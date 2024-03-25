@@ -30,7 +30,12 @@ export function DatasetInfoPanel(props:DatasetInfoPanelProps):JSX.Element
   /** clicked url button. open sheets url of data file */
   function h_urlClick():void
   {
+    if (props.datasetInfo.sheetUrl.length==0)
+    {
+      return;
+    }
 
+    window.open(props.datasetInfo.sheetUrl,"_blank");
   }
 
   /** render list of filter bubbles */

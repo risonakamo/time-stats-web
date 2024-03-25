@@ -12,20 +12,17 @@ const meta:Meta<typeof FileList>={
       {
         displayName:"rouge",
         filename:"rouge.tsv",
-        mainSheetId:"",
-        subSheetId:"",
+        sheetUrl:""
       },
       {
         displayName:"lynette",
         filename:"lynette.tsv",
-        mainSheetId:"",
-        subSheetId:"",
+        sheetUrl:""
       },
       {
         displayName:"herta",
         filename:"herta.tsv",
-        mainSheetId:"",
-        subSheetId:"",
+        sheetUrl:""
       },
     ],
     selectedFile:"rouge.tsv"
