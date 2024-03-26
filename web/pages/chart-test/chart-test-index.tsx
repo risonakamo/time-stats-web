@@ -60,6 +60,23 @@ function ChartTestIndex():JSX.Element
     },
   });
 
+  // call to update the target data file. calls refresh afterward.
+  // todo: this should probably just update the current datafile??
+  // since it is refreshing the current data file. it should be impossible
+  // to refresh anything other than the current datafile. but i guess that's
+  // just how the event is coded right now.
+  const updateDataFileMqy=useMutation({
+    async mutationFn(args:{filename:string}):Promise<void>
+    {
+      updateDataFile(args.filename);
+    },
+
+    onSuccess():void
+    {
+      getDatafileQy.refetch();
+    }
+  });
+
 
 
   // ---- derived state ----
@@ -174,7 +191,9 @@ function ChartTestIndex():JSX.Element
   /** clicked on datafile refresh button. trigger refresh of the target file */
   function h_datafileRefresh(datafile:DataFileInfo2):void
   {
-    updateDataFile(datafile.filename);
+    updateDataFileMqy.mutateAsync({
+      filename:datafile.filename
+    });
   }
 
 
