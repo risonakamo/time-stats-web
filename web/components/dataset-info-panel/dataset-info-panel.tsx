@@ -13,6 +13,7 @@ interface DatasetInfoPanelProps
   datasetInfo:DataFileInfo2
   datafile:TimeDataFile
   activeFilters:TagFilter[]
+  refreshing:boolean
 
   onTagFilterRemove(filter:TagFilter):void
   onRefresh(datafile:DataFileInfo2):void
@@ -21,9 +22,25 @@ interface DatasetInfoPanelProps
 /** component that displays information about a dataset */
 export function DatasetInfoPanel(props:DatasetInfoPanelProps):JSX.Element
 {
+  // all control buttons disabled if no sheet url
+  const controlButtonsDisabled:boolean=(
+    props.datasetInfo.sheetUrl.length==0
+  );
+
+  // refresh button is disabled additionally if currently refreshing
+  const refreshButtonDisabled:boolean=(
+    controlButtonsDisabled
+    || props.refreshing
+  );
+
   /** clicked refresh button. trigger refresh event with the datafile */
   function h_refreshClick():void
   {
+    if (refreshButtonDisabled)
+    {
+      return;
+    }
+
     props.onRefresh(props.datasetInfo);
   }
 
@@ -54,15 +71,19 @@ export function DatasetInfoPanel(props:DatasetInfoPanelProps):JSX.Element
     });
   }
 
+  var refreshButtonText:string="Refresh";
 
-  const controlButtonsDisabled:boolean=props.datasetInfo.sheetUrl.length==0;
+  if (props.refreshing)
+  {
+    refreshButtonText="Refreshing...";
+  }
 
   return <div className="dataset-info-panel">
     <h1>{props.datasetInfo.displayName}</h1>
 
     <div className="control-buttons">
-      <Button1 text="Refresh" icon={<ArrowClockwise className="icon"/>}
-        onClick={h_refreshClick} disabled={controlButtonsDisabled}/>
+      <Button1 text={refreshButtonText} icon={<ArrowClockwise className="icon"/>}
+        onClick={h_refreshClick} disabled={refreshButtonDisabled}/>
       <Button1 text="Open Sheets" icon={<ArrowSquareOut className="icon"/>}
         onClick={h_urlClick} disabled={controlButtonsDisabled}/>
     </div>

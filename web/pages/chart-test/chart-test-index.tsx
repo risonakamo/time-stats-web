@@ -232,7 +232,8 @@ function ChartTestIndex():JSX.Element
     }
 
     return <DatasetInfoPanel datafile={getDatafileQy.data} datasetInfo={currentDatafileInfo}
-      activeFilters={activeFilters} onTagFilterRemove={h_tagFilterRemove} onRefresh={h_datafileRefresh}/>;
+      activeFilters={activeFilters} onTagFilterRemove={h_tagFilterRemove} onRefresh={h_datafileRefresh}
+      refreshing={updateDataFileMqy.isPending}/>;
   }
 
   return <>
