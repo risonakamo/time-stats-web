@@ -68,11 +68,12 @@ function ChartTestIndex():JSX.Element
   const updateDataFileMqy=useMutation({
     async mutationFn(args:{filename:string}):Promise<void>
     {
-      updateDataFile(args.filename);
+      return updateDataFile(args.filename);
     },
 
-    onSuccess():void
+    onSettled():void
     {
+      console.log("refetching file after update");
       getDatafileQy.refetch();
     }
   });
